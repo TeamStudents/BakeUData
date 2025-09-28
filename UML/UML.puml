@@ -1,4 +1,6 @@
 @startuml BakeUPSo
+class istream << (T,#FF7700) >>
+class ostream << (T,#FF7700) >>
 class Driver {
   +static backup(srcDir: string, remoteName: string, packAlgo: string, compressAlgo: string, encryptAlgo: string)
   +static restore(remoteName: string, dstDir: string, packAlgo: string, compressAlgo: string, encryptAlgo: string)
@@ -27,10 +29,10 @@ class RestoreTask {
 
 class BackupCatalog {
   -storage: IRemoteStorage
-  -cache: vector<nlohmann::json]
+  -cache: vector<json>
   +BackupCatalog(storage: IRemoteStorage)
   +refresh()
-  +list(): vector[nlohmann::json]
+  +list(): vector<json>
   +remove(remoteName: string)
 }
 
@@ -121,8 +123,8 @@ class HeaderBlock {
   -backup_time_utc: uint64
   -hostname: string
   -source_paths: vector<string>
-  -pipeline: vector<nlohmann::json>
-  -filters: nlohmann::json
+  -pipeline: vector<json>
+  -filters: json
 }
 
 class HeaderCodec {
@@ -139,6 +141,7 @@ class Logger {
 class BackupException {
   +BackupException(msg: string)
 }
+
 
 BackupTask -down-> IPacker
 BackupTask -down-> ICompressor
